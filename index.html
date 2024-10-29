@@ -23,8 +23,8 @@
             margin: 0;
             padding: 0;
             position: relative; /* or absolute, depending on your needs */
+            filter: saturate(50%);
         }
-
 
         h1 {
             color: #333;
@@ -51,18 +51,16 @@
             margin-top: -15px;
         }
 
-
         .chart-container div {
             flex: 1;
             margin-bottom: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff;
-
+            background-color: white;
             padding: 20px;
         }
 
         h3 {
-            color: #ffffff;
+            color: white;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -76,10 +74,8 @@
         .intro {
             width: 100%;
             padding: 0;
-            background-color: rgba(255, 255, 255, 0);
-            /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+            background-color: rgba(0, 0, 0, 0);
         }
-
 
         .ohxl {
             width: 400px;
@@ -90,22 +86,19 @@
             background-size: auto 100%; /* This will keep the image aspect ratio and scale its height to the box */
             padding-left: 120px; /* Pushes text content to the right side of the box. Adjust as necessary. */
             display: flex;
-            /*align-items: center;*/
             line-height: 100px;
             font-size: 40px;
-            /*margin-left: 100px;*/
             filter: invert(1);
             color: black;
             font-family: 华文隶书;
         }
-
 
         .intro p {
             margin-left: 350px;
             font-family: 楷体;
         }
 
-        .pro, .team, .background  {
+        .pro, .team, .background {
             width: 80%;
             margin-left: 100px;
             font-family: 宋体;
@@ -116,7 +109,6 @@
         .background {
             margin-top: 350px;
         }
-
 
         .pro p, .team p, .background p {
             margin-left: 100px;
@@ -131,8 +123,8 @@
             align-items: flex-end;
             width: 100%;
             padding: 0;
-            background-color: rgba(64, 64, 64, 1);
-            color: white;
+            background-color: white;
+            color: black;
         }
 
         .footer {
@@ -144,8 +136,8 @@
             justify-content: space-around;
             width: 100%;
             padding: 0;
-            background-color: rgba(64, 64, 64, 1);
-            color: white;
+            background-color: white;
+            color: black;
         }
 
         .footer_father .title {
@@ -153,6 +145,18 @@
             margin-left: 40px;
             margin-top: 10px;
             font-family: 宋体;
+        }
+
+        .survey-results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .survey-results .chart-container {
+            width: 45%; /* 调整宽度以适应横向排列 */
+            margin: 10px;
         }
     </style>
 </head>
@@ -165,7 +169,6 @@
         <p></p>
     </div>
 
-
     <div class="intro background">
         <h2>背景介绍</h2>
         <p>
@@ -174,7 +177,6 @@
         </p>
         <p>
     </div>
-
 
     <div class="intro pro">
         <h2>项目介绍</h2>
@@ -185,12 +187,10 @@
         <p>
     </div>
 
-
     <div class="intro team">
         <h2>团队介绍</h2>
         <p>
             我们是一个既有远见卓识又脚踏实地的团队，我们的目标是通过科技和创新来解决当今社会面临的心理健康问题。我们的团队成员各有所长，携手合作，我们能够创造出非凡的成就。我们相信，正是这种多样性，让我们能够突破传统思维的界限，共同打造出能够改善人们生活的产品和服务。
-
 
             <br>
         </p>
@@ -199,7 +199,6 @@
         </p>
     </div>
 </div>
-
 
 <!-- 页脚 -->
 <div class="footer_father">
@@ -226,7 +225,6 @@
             <canvas id="genderChart"></canvas>
         </div>
 
-
         <div class="chart-container ">
             <h2>情绪困难统计</h2>
             <canvas id="emotionChart"></canvas>
@@ -235,8 +233,32 @@
     </div>
 </div>
 
+<!-- 新插入的内容 -->
+<h1>心理监控与情绪管理调查结果</h1>
 
-<script src="chart.js"></script>
+<div class="survey-results">
+    <div class="chart-container">
+        <h2>Q1: 能否很好管理情绪</h2>
+        <canvas id="q1Chart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Q2: 缓解压力的方式</h2>
+        <canvas id="q2Chart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Q3: 使用情绪管理工具频率</h2>
+        <canvas id="q3Chart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Q4: 难以管理情绪的情境</h2>
+        <canvas id="q4Chart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // 数据摘自您提供的表格
 
@@ -269,9 +291,6 @@
             "50-100元/月": 4
         }
     };
-    // 首先要确保你在 HTML 里已经引入了 Chart.js
-    // 如果没有，请在 HTML 文件中的 <head> 标签中添加以下代码：
-    // <script src="https://cdn.jsdelivr.net/npm/chart.js">
 
     document.addEventListener('DOMContentLoaded', function () {
         let ctx1 = document.getElementById('ageChart').getContext('2d');
@@ -280,40 +299,36 @@
         let ctx4 = document.getElementById('emotionChart').getContext('2d');
         let ctx5 = document.getElementById('paymentChart').getContext('2d');
 
-// 年龄分布饼图
-new Chart(ctx1, {
-    type: 'polarArea', // 使用极坐标区域图
-    data: {
-        labels: Object.keys(data.ageGroups),
-        datasets: [{
-            data: Object.values(data.ageGroups),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#A3E85C', '#ED7D3A'],
-            // 南丁格尔玫瑰图的每个扇区半径与其值成比例，这里我们使用sqrt来模拟这种效果
-            // 首先将数据转换为面积（半径的平方），然后计算半径
-            radius: Object.values(data.ageGroups).map(function(value) {
-                return Math.sqrt(value);
-            })
-        }]
-    },
-    options: {
-        scale: {
-            // 确保极坐标图的scale被正确配置
-            ticks: {
-                min: 0,
-                max: Math.max(...Object.values(data.ageGroups)),
-                stepSize: Math.max(...Object.values(data.ageGroups)) / 4
+        // 年龄分布饼图
+        new Chart(ctx1, {
+            type: 'polarArea',
+            data: {
+                labels: Object.keys(data.ageGroups),
+                datasets: [{
+                    data: Object.values(data.ageGroups),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#A3E85C', '#ED7D3A']
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '年龄统计',
+                    font: {
+                        color: '#000000' // 标题字体颜色
+                    }
+                },
+                scales: {
+                    r: {
+                        ticks: {
+                            color: '#000000' // 刻度字体颜色
+                        }
+                    }
+                }
             }
-        },
-        title: {
-            display: true,
-            text: '年龄统计'
-        }
-    }
-});
+        });
 
-
-// 性别分布饼图
-new Chart(ctx2, {
+        // 性别分布饼图
+        new Chart(ctx2, {
             type: 'pie',
             data: {
                 labels: Object.keys(data.genders),
@@ -325,134 +340,202 @@ new Chart(ctx2, {
             options: {
                 title: {
                     display: true,
-                    text: '性别统计'
+                    text: '性别统计',
+                    font: {
+                        color: '#000000'
+                    }
                 }
             }
         });
 
-// 职业分布折线图
-let professionLabels = Object.keys(data.professions);
-let professionData = Object.values(data.professions);
 
+// 职业分布折线图
 new Chart(ctx3, {
-    type: 'line', // 将图表类型更改为 'line'
+    type: 'line',
     data: {
-        labels: professionLabels, // X轴标签
+        labels: Object.keys(data.professions),
         datasets: [{
-            label: '职业统计', // 数据集名称
-            data: professionData, // Y轴数据
-            backgroundColor: '#FF6384', 
-            borderColor: '#FF6384', 
-            borderWidth: 1 // 数据点边框宽度
+            label: '职业统计',
+            data: Object.values(data.professions),
+            backgroundColor: '#FF6384',
+            borderColor: '#FF6384',
+            borderWidth: 1
         }]
     },
     options: {
+        plugins: {
+            background: {
+                color: '#000000', // 设置背景为白色
+                visible: true
+            }
+        },
         title: {
             display: true,
-            text: '职业统计'
+            text: '职业统计',
+            font: {
+                color: '#000000', // 标题字体颜色设置为白色
+                weight: 'bold'    // 可以设置为粗体
+            }
         },
         scales: {
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: '职业'
-                },
+            x: {
                 ticks: {
-                    fontColor: '#FFFFFF', // 设置X轴标签颜色为白色
-                }
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: '人数'
+                    color: '#000000', // X轴标签字体颜色设置为白色
+                    font: {
+                        weight: 'bold' // X轴标签字体可以设置为粗体
+                    }
                 },
-                ticks: {
-                    beginAtZero: true, // Y轴从0开始
-                    fontColor: '#FFFFFF' // 同样，你也可以设置Y轴标签颜色为白色
+                grid: {
+                    display: true,
+                    color: '#000000' // X轴网格线颜色设置为白色
                 }
-            }]
-        }
-    }
-});
-
-
-
-// 情绪困难分布饼图
-new Chart(ctx4, {
-    type: 'doughnut', // 将图表类型更改为 'doughnut'
-    data: {
-        labels: Object.keys(data.emotionDifficulties),
-        datasets: [{
-            data: Object.values(data.emotionDifficulties),
-            backgroundColor: ['#FF6384', '#36A2EB']
-        }]
-    },
-    options: {
-        title: {
-            display: true,
-            text: '情绪困难统计'
+            },
+            y: {
+                ticks: {
+                    color: '#000000', // Y轴标签字体颜色设置为白色
+                    font: {
+                        weight: 'bold' // Y轴标签字体可以设置为粗体
+                    }
+                },
+                grid: {
+                    display: true,
+                    color: '#000000' // Y轴网格线颜色设置为白色
+                }
+            }
         },
-        cutoutPercentage: 50, // 这个选项可以控制圆环中间空白部分的大小，50%表示半圆环
-        responsive: true, // 确保图表在不同设备上都能正确响应
-        maintainAspectRatio: false // 这个选项可以控制图表的宽高比，设置为false可以让图表更灵活地适应容器大小
+        backgroundColor: '#000000' // 图表背景颜色设置为白色
     }
 });
 
-// 付费意愿条形图
-        let paymentLabels = Object.keys(data.paymentWillingness);
-        let paymentData = Object.values(data.paymentWillingness);
-        let paymentDatasets = [];
-
-        paymentLabels.forEach((label, index) => {
-            let dataset = {
-                label: label,
-                data: Array(paymentLabels.length).fill(0), // 创建一个全为0的数组
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9ACD32'][index]
-            };
-            dataset.data[index] = paymentData[index]; // 设置对应的值
-            paymentDatasets.push(dataset);
+        // 情绪困难分布饼图
+        new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data.emotionDifficulties),
+                datasets: [{
+                    data: Object.values(data.emotionDifficulties),
+                    backgroundColor: ['#FF6384', '#36A2EB']
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '情绪困难统计',
+                    font: {
+                        color: '#000000'
+                    }
+                }
+            }
         });
 
+        // 付费意愿条形图
         new Chart(ctx5, {
             type: 'bar',
             data: {
-                labels: paymentLabels,
-                datasets: paymentDatasets
+                labels: Object.keys(data.paymentWillingness),
+                datasets: [{
+                    label: '付费意愿',
+                    data: Object.values(data.paymentWillingness),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#A3E85C']
+                }]
             },
             options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: '付费意愿统计'
+                title: {
+                    display: true,
+                    text: '付费意愿统计',
+                    font: {
+                        color: '#FF6384'
                     }
                 },
                 scales: {
                     x: {
-                        stacked: true,
                         ticks: {
-                            font: {
-                                size: 14,           // 字体大小
-                                family: 'Arial',    // 字体
-                                color: '#ffffff'       // 字体颜色
-                            }
+                            color: '#000000' // X轴字体颜色
                         }
                     },
                     y: {
-                        stacked: true,
                         ticks: {
-                            font: {
-                                size: 14,           // 字体大小
-                                family: 'Arial',    // 字体
-                                color: '#ffffff'       // 字体颜色
-                            }
+                            color: '#000000' // Y轴字体颜色
                         }
                     }
                 }
             }
         });
 
-    });
+        // 新插入的图表数据和初始化
+        const q1Data = {
+            labels: ["A. 完全同意", "B. 同意", "C. 不确定", "D. 不同意", "E. 完全不同意"],
+            datasets: [{
+                label: "人数",
+                data: [3, 5, 5, 4, 3],
+                backgroundColor: "skyblue"
+            }]
+        };
 
+        const q2Data = {
+            labels: ["A. 冥想/深呼吸", "B. 运动", "C. 听音乐", "D. 与朋友或家人交谈", "E. 使用App或其他工具", "F. 其他"],
+            datasets: [{
+                label: "人数",
+                data: [6, 10, 14, 8, 5, 3],
+                backgroundColor: "salmon"
+            }]
+        };
+
+        const q3Data = {
+            labels: ["A. 每天", "B. 每周几次", "C. 偶尔", "D. 从未使用过"],
+            datasets: [{
+                label: "人数",
+                data: [2, 4, 8, 6],
+                backgroundColor: "lightgreen"
+            }]
+        };
+
+        const q4Data = {
+            labels: ["A. 工作/学习压力大", "B. 人际关系紧张", "C. 健康状况不佳", "D. 其他"],
+            datasets: [{
+                label: "人数",
+                data: [12, 8, 6, 2],
+                backgroundColor: "lightcoral"
+            }]
+        };
+
+        const initChart = (ctx, data, title) => {
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: title,
+                    color: '#333',
+                    font: {
+                        size: 18
+                    }
+                },
+
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    ticks: { color: '#666' }
+                },
+                y: {
+                    ticks: { color: '#666' }
+                }
+            },
+            backgroundColor: '#f2f2f2' // 也可以直接设置backgroundColor属性
+        }
+    });
+};
+
+        window.onload = function () {
+            initChart(document.getElementById("q1Chart").getContext("2d"), q1Data, "Q1: 能否很好管理情绪");
+            initChart(document.getElementById("q2Chart").getContext("2d"), q2Data, "Q2: 缓解压力的方式");
+            initChart(document.getElementById("q3Chart").getContext("2d"), q3Data, "Q3: 使用情绪管理工具频率");
+            initChart(document.getElementById("q4Chart").getContext("2d"), q4Data, "Q4: 难以管理情绪的情境");
+        };
+    });
 </script>
 </body>
 
